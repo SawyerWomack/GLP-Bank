@@ -84,7 +84,8 @@ h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:38px;letter-spacing
 @media (max-width:680px){ .col-meta{display:none;} }
 
 .list{border:1px solid var(--border);border-top:none;background:var(--bg-panel);}
-.row{display:flex;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;position:relative;}
+.row{display:flex;flex-direction:column;gap:4px;padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;position:relative;}
+.row-top{display:flex;align-items:center;width:100%;}
 .row:last-child{border-bottom:none;}
 .row:nth-child(even){background:var(--row-alt);}
 .row:hover{background:rgba(212,175,67,0.06);}
@@ -95,6 +96,19 @@ h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:38px;letter-spacing
 .row-title{flex:1;font-family:'Oswald',sans-serif;font-size:15.5px;font-weight:500;color:var(--paper);padding-right:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .row-meta{width:170px;flex-shrink:0;text-align:right;font-family:'Oswald',sans-serif;font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 @media (max-width:680px){ .row-meta{display:none;} }
+.row-summary{
+  padding-left:152px;
+  font-family:'Source Serif 4',serif;
+  font-size:13.5px;
+  line-height:1.45;
+  color:var(--muted);
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  padding-right:12px;
+}
+@media (max-width:680px){ .row-summary{padding-left:0;-webkit-line-clamp:2;} }
 
 .empty{
   text-align:center;padding:60px 20px;color:var(--muted);font-family:'Source Serif 4',serif;font-style:italic;
@@ -287,10 +301,13 @@ function renderList(){
     row.style.setProperty('--band-color', band.color);
     const timeDisplay = e.time_raw ? escapeHtml(e.time_raw) : '<span class="unit">not timed</span>';
     row.innerHTML = `
-      <div class="time-pill">${timeDisplay}</div>
-      <div class="file-no">#${String(e.number).padStart(3,'0')}</div>
-      <div class="row-title">${escapeHtml(e.title)}</div>
-      <div class="row-meta">${escapeHtml(e.group_size || '—')}</div>
+      <div class="row-top">
+        <div class="time-pill">${timeDisplay}</div>
+        <div class="file-no">#${String(e.number).padStart(3,'0')}</div>
+        <div class="row-title">${escapeHtml(e.title)}</div>
+        <div class="row-meta">${escapeHtml(e.group_size || '—')}</div>
+      </div>
+      <div class="row-summary">${escapeHtml(e.summary)}</div>
     `;
     row.onclick = ()=>openDetail(e);
     list.appendChild(row);
